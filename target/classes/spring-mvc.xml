@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/mvc
+         http://www.springframework.org/schema/mvc/spring-mvc.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop.xsd
+         ">
+    <!-- 扫描controller(后端控制器)，并且扫描其中的注解 ,通下面的方式使spring找到带有@Controller的Controller控制器-->
+    <context:component-scan base-package="com.cs.controller"/>
+    <!--    设置配置方案-->
+    <!--开启注解-->
+    <mvc:annotation-driven/>
+    <!-- 引入静态资源 -->
+    <mvc:annotation-driven />
+
+    <!-- 配置JSP 显示ViewResolver(视图解析器) -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+<!--        自定义拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <!--             mvc:exclude-mapping是另外一种拦截，它可以在你后来的测试中对某个页面进行不拦截，这样就不用在
+                LoginInterceptor的preHandler方法里面获取不拦截的请求uri地址了(优选) -->
+<!--            <mvc:exclude-mapping path="/index.do" />-->
+            <mvc:exclude-mapping path="/*/*login*"/>
+            <mvc:exclude-mapping path="/*/register*"/>
+            <mvc:exclude-mapping path="/bookstore/*.do"/>
+            <mvc:exclude-mapping path="/**/fonts/*"/>
+            <mvc:exclude-mapping path="/**/*.css"/>
+            <mvc:exclude-mapping path="/**/*.js"/>
+            <mvc:exclude-mapping path="/**/*.png"/>
+            <mvc:exclude-mapping path="/**/*.gif"/>
+            <mvc:exclude-mapping path="/**/*.jpg"/>
+            <mvc:exclude-mapping path="/**/*.jpeg"/>
+            <mvc:exclude-mapping path="/**/*.MF"/>
+            <bean class="com.cs.interceptor.loginInterceptor"></bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+                <mvc:mapping path="/admin.do"/>
+                <mvc:mapping path="/usersCon/deleteUsers.do"/>
+                <mvc:mapping path="/usersCon/listByPage.do"/>
+<!--                <mvc:mapping path="/bookList.jsp"/>&ndash;&gt;-->
+<!--                <mvc:mapping path="/usersList.jsp"/>&ndash;&gt;-->
+            <!--             mvc:exclude-mapping是另外一种拦截，它可以在你后来的测试中对某个页面进行不拦截，这样就不用在
+                LoginInterceptor的preHandler方法里面获取不拦截的请求uri地址了(优选) -->
+<!--            <mvc:exclude-mapping path="/index.do" />-->
+            <mvc:exclude-mapping path="/*/register*"/>
+            <mvc:exclude-mapping path="/*/*login*"/>
+            <mvc:exclude-mapping path="/**/fonts/*"/>
+            <mvc:exclude-mapping path="/**/*.css"/>
+            <mvc:exclude-mapping path="/**/*.js"/>
+            <mvc:exclude-mapping path="/**/*.png"/>
+            <mvc:exclude-mapping path="/**/*.gif"/>
+            <mvc:exclude-mapping path="/**/*.jpg"/>
+            <mvc:exclude-mapping path="/**/*.jpeg"/>
+            <mvc:exclude-mapping path="/**/*.MF"/>
+            <bean class="com.cs.interceptor.loginInterceptor2"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>

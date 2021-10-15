@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cs.dao.bookstoreMapper" >
+    <select id="findAll" resultType="com.cs.model.bookstore">
+        select
+        id, bookname, author, booktime, quantity, comment
+        from bookstore
+    </select>
+    <select id="findOnlyBook" parameterType="String" resultType="com.cs.model.bookstore">
+        select
+        *
+        from bookstore
+        where bookname=#{bookname}
+    </select>
+<!--    添加书籍信息-->
+    <insert id="save" parameterType="com.cs.model.bookstore" >
+    insert into bookstore (bookname, author,
+      booktime, quantity,comment)
+    values (#{bookname,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR},
+      #{booktime,jdbcType=VARCHAR},#{quantity,jdbcType=INTEGER}, #{comment,jdbcType=VARCHAR})
+  </insert>
+    <select id="findById" parameterType="int" resultType="com.cs.model.bookstore">
+        select
+        id, bookname, author, booktime, quantity, comment
+        from bookstore
+        where id=#{id}
+    </select>
+    <update id="update" parameterType="com.cs.model.bookstore">
+        update bookstore
+        set
+        bookname = #{bookname},
+        author = #{author},
+        booktime = #{booktime},
+        quantity = #{quantity},
+        comment = #{comment}
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterType="Integer[]">
+        delete
+         from bookstore
+        <where>
+            id
+            <foreach collection="array" item="id" open="in (" close=")" separator=",">
+               #{id}
+            </foreach>
+        </where>
+    </delete>
+    <select id="readbook" parameterType="Integer[]" resultType="com.cs.model.bookstore">
+        select
+        *
+        from bookstore
+        <where>
+            id
+            <foreach collection="array" item="id" open="in (" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+</mapper>
