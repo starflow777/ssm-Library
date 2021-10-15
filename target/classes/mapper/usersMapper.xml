@@ -28,7 +28,7 @@
         select
         *
         from users
-        where username=#{username}and password=#{password}
+        where username=#{username} and password=#{password}
     </select>
     <update id="updateUser" parameterType="com.cs.model.users">
         update users
